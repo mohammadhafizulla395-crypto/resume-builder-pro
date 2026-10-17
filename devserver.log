@@ -1,0 +1,103 @@
+▲ Next.js 16.4.2 (Turbopack)
+- Local:         http://localhost:3111
+- Network:       http://192.168.56.1:3111
+- Environments: .env.local
+✓ Ready in 2.1s
+✓ Running next.config.ts took 301ms
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead.
+
+  To migrate automatically, run:
+  npx @next/codemod@canary middleware-to-proxy .
+
+  Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+- Cache Components enabled
+- Partial Prefetching enabled
+
+○ Compiling / ...
+ GET / 200 in 4.1s (next.js: 1880ms, application-code: 2.2s)
+Error: Route "/": Next.js encountered the unstable value `crypto.getRandomValues()` while prerendering.
+
+This value can change between renders, so it must be either prerendered or computed later.
+
+Ways to fix this:
+  - [dynamic] Render at request time by adding a dynamic data access (e.g. `await connection()`) before this call
+  - [cache] Prerender and cache the value with `"use cache"`
+  - [client] Render the value on the client with `"use client"`
+
+Learn more: https://nextjs.org/docs/messages/blocking-prerender-crypto
+    at LandingPage (<anonymous>)
+ POST /api/auth/register 201 in 2.4s (next.js: 564ms, application-code: 1786ms)
+[31m[auth][error][0m MissingCSRF: CSRF token was missing during an action callback. Read more at https://errors.authjs.dev#missingcsrf
+    at validateCSRF (C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\.next\dev\server\chunks\node_modules_@auth_core_0gltlle7chk72._.js:1892:11)
+    at AuthInternal (C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\.next\dev\server\chunks\node_modules_@auth_core_0gltlle7chk72._.js:2510:222)
+    at async Auth (C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\.next\dev\server\chunks\node_modules_@auth_core_0gltlle7chk72._.js:350:34)
+    at async AppRouteRouteModule.renderToResponse (C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:5:25842)
+    at async AppRouteRouteModule.executeRequest (C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:5:30394)
+    at async responseGenerator (C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\.next\dev\server\chunks\node_modules_next_0vei5d4k7hmy6._.js:1355:50)
+    at async AppRouteRouteModule.handleResponse (C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:1:260871)
+    at async handleResponse (C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\.next\dev\server\chunks\node_modules_next_0vei5d4k7hmy6._.js:1427:32)
+    at async Module.handler (C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\.next\dev\server\chunks\node_modules_next_0vei5d4k7hmy6._.js:1565:9)
+    at async DevServer.renderToResponseWithComponentsImpl (C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\node_modules\next\dist\server\base-server.js:1731:9)
+    at async DevServer.renderPageComponent (C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\node_modules\next\dist\server\base-server.js:1790:24)
+    at async DevServer.renderToResponseImpl (C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\node_modules\next\dist\server\base-server.js:1833:36)
+    at async DevServer.pipeImpl (C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\node_modules\next\dist\server\base-server.js:1252:25)
+    at async NextNodeServer.handleCatchallRenderRequest (C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\node_modules\next\dist\server\next-server.js:340:17)
+    at async DevServer.handleRequestImpl (C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\node_modules\next\dist\server\base-server.js:974:17)
+    at async C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\node_modules\next\dist\server\dev\next-dev-server.js:384:20
+    at async Span.traceAsyncFn (C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\node_modules\next\dist\trace\trace.js:168:20)
+    at async DevServer.handleRequest (C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\node_modules\next\dist\server\dev\next-dev-server.js:380:24)
+    at async invokeRender (C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\node_modules\next\dist\server\lib\router-server.js:363:21)
+    at async handleRequest (C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\node_modules\next\dist\server\lib\router-server.js:567:24)
+    at async requestHandlerImpl (C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\node_modules\next\dist\server\lib\router-server.js:636:13)
+    at async Server.requestListener (C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\node_modules\next\dist\server\lib\start-server.js:210:13)
+ POST /api/auth/callback/credentials 302 in 3.0s (next.js: 2.9s, application-code: 62ms)
+ GET /api/auth/session 200 in 59ms (next.js: 31ms, application-code: 27ms)
+ POST /api/resumes 401 in 316ms (next.js: 224ms, application-code: 92ms)
+ GET /api/resumes 401 in 47ms (next.js: 7ms, application-code: 40ms)
+[31m[auth][error][0m MissingCSRF: CSRF token was missing during an action callback. Read more at https://errors.authjs.dev#missingcsrf
+    at validateCSRF (C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\.next\dev\server\chunks\node_modules_@auth_core_0gltlle7chk72._.js:1892:11)
+    at AuthInternal (C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\.next\dev\server\chunks\node_modules_@auth_core_0gltlle7chk72._.js:2510:222)
+    at async Auth (C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\.next\dev\server\chunks\node_modules_@auth_core_0gltlle7chk72._.js:350:34)
+    at async AppRouteRouteModule.renderToResponse (C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:5:25842)
+    at async AppRouteRouteModule.executeRequest (C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:5:30394)
+    at async responseGenerator (C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\.next\dev\server\chunks\node_modules_next_0vei5d4k7hmy6._.js:1355:50)
+    at async AppRouteRouteModule.handleResponse (C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:1:260871)
+    at async handleResponse (C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\.next\dev\server\chunks\node_modules_next_0vei5d4k7hmy6._.js:1427:32)
+    at async Module.handler (C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\.next\dev\server\chunks\node_modules_next_0vei5d4k7hmy6._.js:1565:9)
+    at async DevServer.renderToResponseWithComponentsImpl (C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\node_modules\next\dist\server\base-server.js:1731:9)
+    at async DevServer.renderPageComponent (C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\node_modules\next\dist\server\base-server.js:1790:24)
+    at async DevServer.renderToResponseImpl (C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\node_modules\next\dist\server\base-server.js:1833:36)
+    at async DevServer.pipeImpl (C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\node_modules\next\dist\server\base-server.js:1252:25)
+    at async NextNodeServer.handleCatchallRenderRequest (C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\node_modules\next\dist\server\next-server.js:340:17)
+    at async DevServer.handleRequestImpl (C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\node_modules\next\dist\server\base-server.js:974:17)
+    at async C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\node_modules\next\dist\server\dev\next-dev-server.js:384:20
+    at async Span.traceAsyncFn (C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\node_modules\next\dist\trace\trace.js:168:20)
+    at async DevServer.handleRequest (C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\node_modules\next\dist\server\dev\next-dev-server.js:380:24)
+    at async invokeRender (C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\node_modules\next\dist\server\lib\router-server.js:363:21)
+    at async handleRequest (C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\node_modules\next\dist\server\lib\router-server.js:567:24)
+    at async requestHandlerImpl (C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\node_modules\next\dist\server\lib\router-server.js:636:13)
+    at async Server.requestListener (C:\Users\hafiz\OneDrive\Desktop\ai agents team\resume-builder-pro\node_modules\next\dist\server\lib\start-server.js:210:13)
+ POST /api/auth/callback/credentials 302 in 31ms (next.js: 4ms, application-code: 27ms)
+ POST /api/auth/register 400 in 17ms (next.js: 4ms, application-code: 14ms)
+ POST /api/auth/register 201 in 1326ms (next.js: 8ms, application-code: 1317ms)
+ GET /api/auth/csrf 200 in 89ms (next.js: 48ms, application-code: 41ms)
+ POST /api/auth/callback/credentials 302 in 2.2s (next.js: 7ms, application-code: 2.1s)
+ GET /api/auth/session 200 in 85ms (next.js: 6ms, application-code: 79ms)
+ POST /api/resumes 201 in 202ms (next.js: 14ms, application-code: 188ms)
+ GET /api/resumes 200 in 143ms (next.js: 8ms, application-code: 135ms)
+(node:5636) [MONGOOSE] Warning: mongoose: the `new` option for `findOneAndUpdate()` and `findOneAndReplace()` is deprecated. Use `returnDocument: 'after'` instead.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ PUT /api/resumes/6ad346207abba7910485f442 200 in 14.6s (next.js: 14.1s, application-code: 441ms)
+ POST /api/resumes/6ad346207abba7910485f442 201 in 420ms (next.js: 110ms, application-code: 310ms)
+ DELETE /api/resumes/6ad346327abba7910485f443 200 in 271ms (next.js: 17ms, application-code: 254ms)
+ POST /api/auth/register 201 in 4.5s (next.js: 26ms, application-code: 4.5s)
+ GET /api/auth/csrf 200 in 353ms (next.js: 176ms, application-code: 177ms)
+ POST /api/auth/callback/credentials 302 in 4.5s (next.js: 20ms, application-code: 4.4s)
+ GET /api/resumes/6ad346207abba7910485f442 404 in 250ms (next.js: 23ms, application-code: 227ms)
+ DELETE /api/resumes/6ad346207abba7910485f442 404 in 434ms (next.js: 102ms, application-code: 332ms)
+○ Compiling /resume/[id] ...
+ GET /resume/6ad346207abba7910485f442 200 in 48s (next.js: 24.0s, proxy.ts: 69ms, generate-params: 20.6s, application-code: 3.6s)
+○ Compiling /dashboard ...
+ GET /dashboard 200 in 8.2s (next.js: 6.4s, proxy.ts: 62ms, application-code: 1718ms)
+✓ Finished writing to filesystem cache in 10.1s
+✓ Finished filesystem cache database compaction in 13.7s
