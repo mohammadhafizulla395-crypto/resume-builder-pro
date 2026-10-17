@@ -19,6 +19,14 @@ export function middleware(req: NextRequest) {
   const isProtected = PROTECTED_PREFIXES.some((p) => pathname.startsWith(p));
   const isAuthPage = AUTH_PAGES.some((p) => pathname.startsWith(p));
 
+  // Personalized pages must never be cached at the CDN edge — HTML contains
+  // the signed-in user's data. Mark every middleware-matched response private.
+  const noStore = () => {
+    const res = NextResponse.next();
+    res.headers.set("Cache-Control", "private, no-store, max-age=0, must-revalidate");
+    return res;
+  };
+
   if (isProtected && !hasSession) {
     const url = req.nextUrl.clone();
     url.pathname = "/login";
@@ -33,7 +41,7 @@ export function middleware(req: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  return NextResponse.next();
+  return isProtected || isAuthPage ? noStore() : NextResponse.next();
 }
 
 export const config = {
