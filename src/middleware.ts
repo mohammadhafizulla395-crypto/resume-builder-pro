@@ -11,7 +11,10 @@ const AUTH_PAGES = ["/login", "/register"];
  */
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
-  const hasSession = Boolean(req.cookies.get("authjs.session-token")?.value);
+  const hasSession = Boolean(
+    req.cookies.get("__Secure-authjs.session-token")?.value ??
+      req.cookies.get("authjs.session-token")?.value
+  );
 
   const isProtected = PROTECTED_PREFIXES.some((p) => pathname.startsWith(p));
   const isAuthPage = AUTH_PAGES.some((p) => pathname.startsWith(p));
