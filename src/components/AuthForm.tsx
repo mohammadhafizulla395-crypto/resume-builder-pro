@@ -45,8 +45,13 @@ export function AuthForm({ mode }: { mode: Mode }) {
         return;
       }
 
+      // Only allow same-origin paths — block //host and /\host bypasses.
       const from = params.get("from");
-      router.push(from && from.startsWith("/") ? from : "/dashboard");
+      const safeFrom =
+        from && from.startsWith("/") && !from.startsWith("//") && !from.startsWith("/\\")
+          ? from
+          : "/dashboard";
+      router.push(safeFrom);
       router.refresh();
     } catch {
       setError("Network error. Please try again.");
