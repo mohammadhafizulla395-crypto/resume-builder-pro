@@ -62,6 +62,18 @@ export async function POST(req: Request) {
   }
 
   await connectDB();
+
+  // Per-user cap: prevents a single account from unbounded DB/document
+  // growth (resource-abuse vector). Generous for real humans.
+  const RESUME_CAP = 50;
+  const count = await Resume.countDocuments({ userId: authz.userId });
+  if (count >= RESUME_CAP) {
+    return NextResponse.json(
+      { error: `You've reached the limit of ${RESUME_CAP} resumes. Delete or duplicate an existing one instead.` },
+      { status: 429 },
+    );
+  }
+
   const doc = await Resume.create({
     userId: authz.userId,
     title: parsed.data.title,

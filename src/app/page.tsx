@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { auth } from "@/lib/auth";
 import { SignOutButton } from "@/components/SignOutButton";
+import { SiteFooter } from "@/components/SiteFooter";
 
 // Blocking route: header reflects the live session (Next 16 cacheComponents)
 export const instant = false;
@@ -237,7 +238,7 @@ export default async function LandingPage() {
       </section>
 
       {/* Features */}
-      <section className="border-y border-slate-200 bg-white py-16">
+      <section id="features" className="border-y border-slate-200 bg-white py-16">
         <div className="mx-auto max-w-6xl px-6">
           <h2 className="text-center text-3xl font-bold">Everything you need, nothing you don&apos;t</h2>
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -267,15 +268,7 @@ export default async function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-slate-200 bg-white py-8">
-        <div className="mx-auto max-w-6xl px-6 flex flex-col items-center justify-between gap-4 text-sm text-slate-500 sm:flex-row">
-          <p>© {new Date().getFullYear()} ResumeForge. All rights reserved.</p>
-          <p>
-            Built by{" "}
-            <span className="font-medium text-slate-700">Shaik Mohammed Hafizulla</span>
-          </p>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

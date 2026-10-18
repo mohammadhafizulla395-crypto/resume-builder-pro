@@ -1,0 +1,4 @@
+Contact: https://github.com/mohammadhafizulla395-crypto/resume-builder-pro/security/advisories/new
+Expires: 2027-01-16T00:00:00.000Z
+Preferred-Languages: en
+Policy: https://github.com/mohammadhafizulla395-crypto/resume-builder-pro/blob/main/README.md
