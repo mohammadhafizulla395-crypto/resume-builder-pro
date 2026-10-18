@@ -35,24 +35,28 @@ export async function POST(req: Request) {
   const { name, email, password } = parsed.data;
   const normalizedEmail = email.toLowerCase();
 
+  // Anti-enumeration: every valid registration returns the SAME status, body,
+  // and amount of bcrypt work — whether or not the email already exists — so
+  // this endpoint cannot be used as an account-existence oracle. Users with an
+  // existing account simply sign in with their original password.
+  const created = "Account created. You can sign in now.";
+
   try {
     await connectDB();
     const existing = await User.findOne({ email: normalizedEmail }).select("_id").lean();
     if (existing) {
-      return NextResponse.json({ error: "An account with this email already exists." }, { status: 409 });
+      await bcrypt.hash(password, 12); // equalize timing with the create path
+      return NextResponse.json({ message: created }, { status: 201 });
     }
 
     const passwordHash = await bcrypt.hash(password, 12);
-    const user = await User.create({ name, email: normalizedEmail, passwordHash });
+    await User.create({ name, email: normalizedEmail, passwordHash });
 
-    return NextResponse.json(
-      { id: user._id.toString(), message: "Account created. You can sign in now." },
-      { status: 201 },
-    );
+    return NextResponse.json({ message: created }, { status: 201 });
   } catch (err) {
-    // Duplicate key race (unique index)
+    // Duplicate key race (unique index) — same uniform response
     if (typeof err === "object" && err !== null && "code" in err && (err as { code?: number }).code === 11000) {
-      return NextResponse.json({ error: "An account with this email already exists." }, { status: 409 });
+      return NextResponse.json({ message: created }, { status: 201 });
     }
     console.error("[register]", err);
     return NextResponse.json({ error: "Something went wrong. Try again." }, { status: 500 });

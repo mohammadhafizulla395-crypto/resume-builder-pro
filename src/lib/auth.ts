@@ -11,6 +11,11 @@ const credentialsSchema = z.object({
   password: z.string().min(8).max(128),
 });
 
+// Precomputed at module load so failed lookups perform exactly the same
+// bcrypt work as real comparisons — closes the user-enumeration timing
+// side channel (fast response for unknown emails vs slow for known ones).
+const DUMMY_HASH = bcrypt.hashSync("timing-equalization-placeholder", 12);
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
   session: { strategy: "jwt", maxAge: 60 * 60 * 24 * 7 }, // 7 days
   pages: { signIn: "/login" },
@@ -30,7 +35,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
         await connectDB();
         const user = await User.findOne({ email: email.toLowerCase() }).select("+passwordHash");
-        if (!user) return null;
+        if (!user) {
+          await bcrypt.compare(password, DUMMY_HASH); // timing equalization
+          return null;
+        }
 
         const valid = await bcrypt.compare(password, user.passwordHash);
         if (!valid) return null;
