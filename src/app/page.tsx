@@ -2,6 +2,7 @@ import Link from "next/link";
 import { auth } from "@/lib/auth";
 import { SignOutButton } from "@/components/SignOutButton";
 import { SiteFooter } from "@/components/SiteFooter";
+import { TEMPLATES } from "@/components/templates/registry";
 
 // Blocking route: header reflects the live session (Next 16 cacheComponents)
 export const instant = false;
@@ -13,7 +14,7 @@ const features = [
     icon: "◧",
   },
   {
-    title: "6 ATS-friendly templates",
+    title: `${TEMPLATES.length} ATS-friendly templates`,
     body: "Switch templates instantly — your content carries over. Every layout is tuned for applicant tracking systems.",
     icon: "▦",
   },
@@ -42,7 +43,7 @@ const features = [
 const steps = [
   { n: "1", t: "Create your account", b: "Free sign-up. Email + password, no credit card." },
   { n: "2", t: "Fill your sections", b: "Guided forms with live validation and smart date fields." },
-  { n: "3", t: "Pick your template", b: "Six clean layouts — preview all of them as you type." },
+  { n: "3", t: "Pick your template", b: `${TEMPLATES.length} clean layouts — preview them all as you type.` },
   { n: "4", t: "Export and apply", b: "Download a crisp PDF and start sending applications." },
 ];
 
@@ -101,9 +102,9 @@ export default async function LandingPage() {
               <span className="text-[var(--rb-accent)]">final page as you type.</span>
             </h1>
             <p className="mt-5 text-lg text-slate-600">
-              Stop fighting with formatting. ResumeForge gives you a split-screen editor, six
-              recruiter-safe templates, and one-click PDF export — in a fast, secure, no-bloat
-              editor.
+              Stop fighting with formatting. ResumeForge gives you a split-screen editor,{" "}
+              {TEMPLATES.length} recruiter-safe templates, and one-click PDF export — in a fast,
+              secure, no-bloat editor.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
@@ -121,7 +122,7 @@ export default async function LandingPage() {
             </div>
             <dl className="mt-10 grid grid-cols-3 gap-4 max-w-md">
               {[
-                ["6", "Templates"],
+                [String(TEMPLATES.length), "Templates"],
                 ["12", "Sections"],
                 ["1 click", "PDF export"],
               ].map(([v, l]) => (
@@ -194,46 +195,48 @@ export default async function LandingPage() {
 
       {/* Templates */}
       <section id="templates" className="mx-auto max-w-6xl px-6 py-16">
-        <h2 className="text-center text-3xl font-bold">Six templates, zero reformatting</h2>
+        <h2 className="text-center text-3xl font-bold">
+          {TEMPLATES.length} templates, zero reformatting
+        </h2>
         <p className="mx-auto mt-3 max-w-2xl text-center text-slate-600">
           Switch anytime — your content moves with you. Each template is designed for ATS parsing
-          and clean printing.
+          and clean printing. Click any template to start editing with it.
         </p>
-        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {[
-            { id: "ats-minimal", name: "ATS Minimal", desc: "Single column, strict hierarchy. Maximum parsing safety.", accent: "#0f172a" },
-            { id: "modern-clean", name: "Modern Clean", desc: "Indigo accents and confident headings for tech roles.", accent: "#4f46e5" },
-            { id: "classic-serif", name: "Classic Serif", desc: "Traditional Georgia typography for formal industries.", accent: "#1e293b" },
-            { id: "compact-one-column", name: "Compact One-Column", desc: "Dense layout that fits 10+ years on one page.", accent: "#334155" },
-            { id: "two-column-sidebar", name: "Two-Column Sidebar", desc: "Skills-forward split layout with sidebar contact.", accent: "#0e7490" },
-            { id: "executive-elegant", name: "Executive Elegant", desc: "Refined spacing and gold-rule details for senior roles.", accent: "#78350f" },
-          ].map((t) => (
-            <div
-              key={t.id}
-              className="group rounded-xl border border-slate-200 bg-white p-6 transition hover:-translate-y-1 hover:shadow-lg"
-            >
-              <div className="mx-auto h-40 w-28 rounded-md border border-slate-200 bg-white p-3 shadow-sm">
-                <div className="h-2 w-12 rounded" style={{ background: t.accent }} />
-                <div className="mt-1.5 h-1.5 w-16 rounded bg-slate-300" />
-                <div className="mt-3 space-y-1.5">
-                  {Array.from({ length: 8 }).map((_, i) => (
-                    <div
-                      key={i}
-                      className="h-1 rounded bg-slate-200"
-                      style={{ width: `${90 - (i % 3) * 15}%` }}
-                    />
-                  ))}
+        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {TEMPLATES.map((t) => {
+            const target = `/resume/new?template=${encodeURIComponent(t.id)}`;
+            return (
+              <Link
+                key={t.id}
+                href={signedIn ? target : `/register?from=${encodeURIComponent(target)}`}
+                className="group rounded-xl border border-slate-200 bg-white p-5 transition hover:-translate-y-1 hover:border-indigo-300 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-indigo-500"
+              >
+                <div className="mx-auto h-36 w-28 rounded-md border border-slate-200 bg-white p-3 shadow-sm">
+                  <div className="h-2 w-12 rounded" style={{ background: t.accent }} />
+                  <div className="mt-1.5 h-1.5 w-16 rounded bg-slate-300" />
+                  <div className="mt-3 space-y-1.5">
+                    {Array.from({ length: 8 }).map((_, i) => (
+                      <div
+                        key={i}
+                        className="h-1 rounded bg-slate-200"
+                        style={{ width: `${90 - (i % 3) * 15}%` }}
+                      />
+                    ))}
+                  </div>
+                  <div className="mt-3 h-1.5 w-10 rounded" style={{ background: t.accent }} />
+                  <div className="mt-1.5 space-y-1.5">
+                    <div className="h-1 w-full rounded bg-slate-200" />
+                    <div className="h-1 w-4/5 rounded bg-slate-200" />
+                  </div>
                 </div>
-                <div className="mt-3 h-1.5 w-10 rounded" style={{ background: t.accent }} />
-                <div className="mt-1.5 space-y-1.5">
-                  <div className="h-1 w-full rounded bg-slate-200" />
-                  <div className="h-1 w-4/5 rounded bg-slate-200" />
-                </div>
-              </div>
-              <h3 className="mt-4 font-semibold">{t.name}</h3>
-              <p className="mt-1 text-sm text-slate-600">{t.desc}</p>
-            </div>
-          ))}
+                <h3 className="mt-4 font-semibold group-hover:text-indigo-600">{t.name}</h3>
+                <p className="mt-1 text-sm text-slate-600">{t.description}</p>
+                <span className="mt-3 inline-block text-sm font-medium text-indigo-600 opacity-0 transition group-hover:opacity-100 group-focus-visible:opacity-100">
+                  Use this template →
+                </span>
+              </Link>
+            );
+          })}
         </div>
       </section>
 

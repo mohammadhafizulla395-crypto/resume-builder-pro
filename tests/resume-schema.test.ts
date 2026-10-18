@@ -5,6 +5,8 @@ import {
   updateResumeSchema,
   resumeDataSchema,
   emptyResumeData,
+  templateIdSchema,
+  TEMPLATE_IDS,
 } from "@/types/resume";
 import { rateLimit } from "@/lib/rate-limit";
 import { dateRange, hasText, getTemplate, TEMPLATES } from "@/components/templates/registry";
@@ -95,10 +97,17 @@ describe("rate limiter", () => {
 });
 
 describe("template registry", () => {
-  it("registers exactly 6 unique templates", () => {
-    expect(TEMPLATES).toHaveLength(6);
+  it("registers every template id exactly once (registry === schema enum, >= 26)", () => {
+    // Single source of truth invariant: registry entries must match TEMPLATE_IDS
+    // one-for-one, so Zod validation, the Mongoose model, the picker, and the
+    // landing gallery can never drift apart.
+    expect(TEMPLATES).toHaveLength(TEMPLATE_IDS.length);
+    expect(TEMPLATE_IDS.length).toBeGreaterThanOrEqual(26);
     const ids = new Set(TEMPLATES.map((t) => t.id));
-    expect(ids.size).toBe(6);
+    expect(ids.size).toBe(TEMPLATES.length);
+    expect([...TEMPLATE_IDS].every((id) => ids.has(id))).toBe(true);
+    expect(TEMPLATES.every((t) => templateIdSchema.safeParse(t.id).success)).toBe(true);
+    expect(TEMPLATES.every((t) => t.name.trim().length > 0 && t.accent.startsWith("#"))).toBe(true);
   });
 
   it("getTemplate falls back to the first template for unknown ids", () => {

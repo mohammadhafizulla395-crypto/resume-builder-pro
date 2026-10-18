@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { TEMPLATES } from "@/components/templates/registry";
 
 const GITHUB = "https://github.com/mohammadhafizulla395-crypto/resume-builder-pro";
 
@@ -56,8 +57,8 @@ export function SiteFooter() {
               ResumeForge
             </Link>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-slate-500">
-              Build ATS-friendly resumes with live preview, six clean templates, and one-click
-              PDF export — autosaved securely to the cloud.
+              Build ATS-friendly resumes with live preview, {TEMPLATES.length} professional
+              templates, and one-click PDF export — autosaved securely to the cloud.
             </p>
             <p className="mt-5 text-sm text-slate-500">
               Built by{" "}

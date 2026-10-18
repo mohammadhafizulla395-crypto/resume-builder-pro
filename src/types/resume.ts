@@ -90,12 +90,35 @@ export const resumeDataSchema = z.object({
 });
 
 export const TEMPLATE_IDS = [
+  // Core six
   "ats-minimal",
   "modern-clean",
   "classic-serif",
   "compact-one-column",
   "two-column-sidebar",
   "executive-elegant",
+  // Free-tier professional styles (round 2)
+  "bold-header",
+  "professional-blue",
+  "minimal-line",
+  "creative-band",
+  "simple-stack",
+  "academic-cv",
+  "graduate-entry",
+  "tech-engineer",
+  "it-specialist",
+  "designer-portfolio",
+  "marketing-pro",
+  "sales-professional",
+  "finance-conservative",
+  "healthcare-nurse",
+  "teacher-education",
+  "legal-professional",
+  "hospitality-service",
+  "student-resume",
+  "federal-block",
+  "executive-dark",
+  "color-sidebar",
 ] as const;
 
 export const templateIdSchema = z.enum(TEMPLATE_IDS);

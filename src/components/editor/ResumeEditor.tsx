@@ -480,13 +480,13 @@ export function ResumeEditor({
 
         {/* Right: preview */}
         <div className="flex min-w-0 flex-1 flex-col bg-slate-100">
-          {/* template picker */}
+          {/* template picker — scrollable thumbnail strip (scales to all templates) */}
           <div className="border-b border-slate-200 bg-white px-4 py-3">
-            <div className="flex items-center gap-3">
-              <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            <div className="flex items-start gap-3">
+              <span className="mt-1.5 shrink-0 text-xs font-semibold uppercase tracking-wide text-slate-500">
                 Template
               </span>
-              <div className="flex flex-wrap gap-2">
+              <div className="rail-scroll flex min-w-0 gap-2 overflow-x-auto pb-1">
                 {TEMPLATES.map((t) => (
                   <button
                     key={t.id}
@@ -494,13 +494,28 @@ export function ResumeEditor({
                     onClick={() => onTemplateChange(t.id)}
                     title={t.description}
                     aria-pressed={template === t.id}
-                    className={`rounded-full border px-3 py-1 text-xs font-medium transition ${
+                    aria-label={`Switch to ${t.name} template`}
+                    className={`group w-[74px] shrink-0 rounded-lg border p-1.5 text-left transition ${
                       template === t.id
-                        ? "border-indigo-500 bg-indigo-500 text-white"
-                        : "border-slate-300 bg-white text-slate-600 hover:border-slate-400"
+                        ? "border-indigo-500 bg-indigo-50 ring-2 ring-indigo-400"
+                        : "border-slate-200 bg-white hover:border-slate-400"
                     }`}
                   >
-                    {t.name}
+                    <div className="h-12 rounded border border-slate-200 bg-white p-1">
+                      <div className="h-1.5 w-6 rounded-sm" style={{ background: t.accent }} />
+                      <div className="mt-1 space-y-1">
+                        <div className="h-1 w-full rounded-sm bg-slate-200" />
+                        <div className="h-1 w-4/5 rounded-sm bg-slate-200" />
+                        <div className="h-1 w-full rounded-sm bg-slate-200" />
+                        <div
+                          className="h-1 w-3/5 rounded-sm"
+                          style={{ background: t.accent, opacity: 0.45 }}
+                        />
+                      </div>
+                    </div>
+                    <div className="mt-1 truncate text-[10px] font-medium text-slate-600 group-hover:text-slate-900">
+                      {t.name}
+                    </div>
                   </button>
                 ))}
               </div>

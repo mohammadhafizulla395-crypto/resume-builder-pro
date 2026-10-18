@@ -1,6 +1,6 @@
 # ResumeForge — Professional Resume Builder
 
-A production-grade resume builder: split-screen live editor, 6 ATS-friendly templates,
+A production-grade resume builder: split-screen live editor, 27 ATS-friendly templates,
 secure auth, MongoDB persistence, autosave, and one-click PDF export.
 
 **Live site:** *(deployed on Vercel)*
@@ -25,8 +25,9 @@ secure auth, MongoDB persistence, autosave, and one-click PDF export.
 - **Resume CRUD** — create, edit, duplicate, delete; owner-only access enforced server-side
 - **Split-screen editor** — form rail on the left, pixel-accurate A4 preview on the right
 - **Autosave** — debounced (1.2 s) with visible status; flush-on-unload safety net
-- **6 templates** — ATS Minimal, Modern Clean, Classic Serif, Compact One-Column,
-  Two-Column Sidebar, Executive Elegant — switch instantly, content carries over
+- **27 templates** — ATS Minimal, Modern Clean, Classic Serif, Compact One-Column,
+  Two-Column Sidebar, Executive Elegant, Bold Header, Academic CV, Tech Engineer,
+  Federal Block, Color Sidebar, and 16 more — switch instantly, content carries over
 - **Sections** — Profile, Summary, Experience, Education, Skills, Projects,
   Certifications, Languages + unlimited Custom sections
 - **Drag reorder** — every list reorders with a grip handle (keyboard accessible)
@@ -72,7 +73,7 @@ src/
 │   └── resume/[id]/        # Edit flow
 ├── components/
 │   ├── editor/             # Split-pane editor, sortable lists
-│   └── templates/          # 6 template components + registry
+│   └── templates/          # 27 template components + registry
 ├── lib/                    # db, auth, models, rate limiter
 ├── types/                  # Zod schemas + TS types (single source of truth)
 └── middleware.ts           # Route protection
