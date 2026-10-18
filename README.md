@@ -80,4 +80,4 @@ src/
 
 ---
 
-Built by **Sutrixa Tech**
+Built by **Shaik Mohammed Hafizulla**

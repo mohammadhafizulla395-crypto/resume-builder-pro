@@ -271,7 +271,8 @@ export default async function LandingPage() {
         <div className="mx-auto max-w-6xl px-6 flex flex-col items-center justify-between gap-4 text-sm text-slate-500 sm:flex-row">
           <p>© {new Date().getFullYear()} ResumeForge. All rights reserved.</p>
           <p>
-            Built by <span className="font-medium text-slate-700">Sutrixa Tech</span>
+            Built by{" "}
+            <span className="font-medium text-slate-700">Shaik Mohammed Hafizulla</span>
           </p>
         </div>
       </footer>
