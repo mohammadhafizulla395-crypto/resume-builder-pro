@@ -263,7 +263,7 @@ export default async function LandingPage() {
           href={signedIn ? "/dashboard" : "/register"}
           className="mt-8 inline-block rounded-xl bg-[var(--rb-accent)] px-8 py-3.5 font-semibold text-white shadow-sm hover:opacity-90"
         >
-          {signedIn ? "Open dashboard" : "Start building — it&apos;s free"}
+          {signedIn ? "Open dashboard" : "Start building — it's free"}
         </Link>
       </section>
 
