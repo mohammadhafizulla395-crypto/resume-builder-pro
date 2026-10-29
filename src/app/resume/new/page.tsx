@@ -6,8 +6,7 @@ import { emptyResumeData, templateIdSchema } from "@/types/resume";
 
 export const metadata: Metadata = { title: "New resume" };
 
-// Blocking route: waits for the session/DB check before responding (Next 16 cacheComponents)
-export const instant = false;
+// Dynamic route: waits for the session/DB check before responding.
 
 export default async function NewResumePage({
   searchParams,

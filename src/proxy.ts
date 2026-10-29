@@ -12,8 +12,10 @@ const AUTH_PAGES = ["/login", "/register"];
  * 2. Per-IP throttle on credential sign-ins — closes the gap where the
  *    per-email limiter inside authorize() can be dodged by rotating victim
  *    emails (credential stuffing), giving one IP only 15 attempts/minute.
- * 3. Blocks Auth.js's /api/auth/providers metadata endpoint (no consumer
- *    value; only helps attackers map the auth surface).
+ * 3. /api/auth/providers is intentionally NOT blocked: next-auth/react's
+ *    signIn() calls getProviders() first and redirects to /api/auth/error
+ *    when it fails, so blocking it broke every credentials login. The
+ *    endpoint only echoes provider metadata that is public by design.
  * 4. Personalized pages are always `private, no-store` so the CDN can never
  *    cache user-specific HTML.
  */
@@ -21,10 +23,6 @@ export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   // --- endpoint hardening -------------------------------------------------
-  if (pathname === "/api/auth/providers") {
-    return NextResponse.json({ error: "Not found." }, { status: 404 });
-  }
-
   if (pathname === "/api/auth/callback/credentials" && req.method === "POST") {
     const limited = rateLimit(clientKey(req, "login-ip"), 15, 60_000);
     if (!limited.ok) {
@@ -79,6 +77,5 @@ export const config = {
     "/login",
     "/register",
     "/api/auth/callback/credentials",
-    "/api/auth/providers",
   ],
 };

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { nanoid } from "nanoid";
+import { motion } from "motion/react";
 import {
   type CertificationItem,
   type CustomSection,
@@ -40,19 +41,94 @@ type SectionKey =
   | "languages"
   | "custom";
 
-const SECTIONS: { key: SectionKey; label: string; icon: string }[] = [
-  { key: "profile", label: "Profile", icon: "👤" },
-  { key: "summary", label: "Summary", icon: "✍️" },
-  { key: "experience", label: "Experience", icon: "💼" },
-  { key: "education", label: "Education", icon: "🎓" },
-  { key: "skills", label: "Skills", icon: "⚡" },
-  { key: "projects", label: "Projects", icon: "🚀" },
-  { key: "certifications", label: "Certifications", icon: "📜" },
-  { key: "languages", label: "Languages", icon: "🌐" },
-  { key: "custom", label: "Custom sections", icon: "➕" },
+/* ---------- SVG icons for section nav ---------- */
+
+const ProfileIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+    <circle cx="12" cy="7" r="4" />
+  </svg>
+);
+
+const SummaryIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+    <polyline points="14 2 14 8 20 8" />
+    <line x1="16" y1="13" x2="8" y2="13" />
+    <line x1="16" y1="17" x2="8" y2="17" />
+    <polyline points="10 9 9 9 8 9" />
+  </svg>
+);
+
+const ExperienceIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+    <line x1="16" y1="21" x2="16" y2="21" />
+    <line x1="12" y1="17" x2="12" y2="17" />
+    <line x1="8" y1="13" x2="8" y2="13" />
+    <line x1="6" y1="9" x2="6" y2="9" />
+    <line x1="10" y1="9" x2="10" y2="9" />
+    <line x1="18" y1="5" x2="18" y2="5" />
+    <line x1="14" y1="5" x2="14" y2="5" />
+  </svg>
+);
+
+const EducationIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M22 10v6M2 10l10-10 10 10M4 17v6m-2-2h12" />
+  </svg>
+);
+
+const SkillsIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="4" y="4" width="16" height="16" rx="2" ry="2" />
+    <line x1="16" y1="4" x2="16" y2="20" />
+    <line x1="20" y1="16" x2="4" y2="16" />
+  </svg>
+);
+
+const ProjectsIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 2L2 7l10 5 10-5-10-5z" />
+    <path d="M2 17l10 5 10-5" />
+    <path d="M2 12l10 5 10-5" />
+  </svg>
+);
+
+const CertificationsIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+    <path d="M9 10V8M15 10v-2M9 16v2M15 16v2M6 13h3M15 13h3M9 6h3M15 6h3" />
+  </svg>
+);
+
+const LanguagesIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M4 9v11c0 1.1 0 2 .175 2.857C5.299 14.199 7 16.499 7 12s-1.701-2.199-2.825-3.143C4.142 9.823 4 9.406 4 9zM16 9v11c0 1.1 0 2-.175 2.857C14.701 14.199 13 16.499 13 12s1.701-2.199 2.825-3.143C15.858 9.823 16 9.406 16 9z" />
+    <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z" />
+  </svg>
+);
+
+const CustomIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="12" y1="5" x2="12" y2="19" />
+    <line x1="5" y1="12" x2="19" y2="12" />
+  </svg>
+);
+
+const SECTIONS: { key: SectionKey; label: string; icon: React.ReactNode }[] = [
+  { key: "profile", label: "Profile", icon: <ProfileIcon /> },
+  { key: "summary", label: "Summary", icon: <SummaryIcon /> },
+  { key: "experience", label: "Experience", icon: <ExperienceIcon /> },
+  { key: "education", label: "Education", icon: <EducationIcon /> },
+  { key: "skills", label: "Skills", icon: <SkillsIcon /> },
+  { key: "projects", label: "Projects", icon: <ProjectsIcon /> },
+  { key: "certifications", label: "Certifications", icon: <CertificationsIcon /> },
+  { key: "languages", label: "Languages", icon: <LanguagesIcon /> },
+  { key: "custom", label: "Custom sections", icon: <CustomIcon /> },
 ];
 
-/* ---------------- small field primitives ---------------- */
+/* ---------- small field primitives ---------- */
 
 function Field({
   label,
@@ -67,18 +143,18 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="block text-[13px] font-medium text-slate-700">
+      <span className="block text-[13px] font-medium text-[var(--rb-muted)]">
         {label}
-        {required && <span className="text-red-500"> *</span>}
+        {required && <span className="text-red-600"> *</span>}
       </span>
       <div className="mt-1">{children}</div>
-      {hint && <span className="mt-1 block text-xs text-slate-400">{hint}</span>}
+      {hint && <span className="mt-1 block text-xs text-[var(--rb-muted-light)]">{hint}</span>}
     </label>
   );
 }
 
 const inputCls =
-  "w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-indigo-500 focus:outline-none";
+  "input-base";
 
 function TextInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
   return <input {...props} className={inputCls} />;
@@ -88,20 +164,27 @@ function TextArea(props: React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
   return <textarea {...props} className={`${inputCls} min-h-[92px] resize-y`} />;
 }
 
+const selectCls =
+  "w-full rounded-lg border border-[var(--rb-border)] bg-white px-2.5 py-2 text-sm text-[var(--rb-primary)] focus:border-[var(--rb-accent)] focus:outline-none focus:ring-2 focus:ring-[var(--rb-accent-light)] transition-colors";
+
+function Select(props: React.SelectHTMLAttributes<HTMLSelectElement>) {
+  return <select {...props} className={selectCls} />;
+}
+
 function RemoveBtn({ onClick }: { onClick: () => void }) {
   return (
     <button
       type="button"
       onClick={onClick}
       aria-label="Remove entry"
-      className="rounded-lg px-2.5 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50"
+      className="btn-danger px-2.5 py-1 text-xs"
     >
       Remove
     </button>
   );
 }
 
-/* ---------------- main editor ---------------- */
+/* ---------- main editor ---------- */
 
 export function ResumeEditor({
   mode,
@@ -127,7 +210,6 @@ export function ResumeEditor({
   const dirtyRef = useRef(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Keep refs in sync after render (save callbacks read the latest values)
   useEffect(() => {
     dataRef.current = data;
     titleRef.current = title;
@@ -152,7 +234,6 @@ export function ResumeEditor({
         const payload = { title: titleRef.current, template: templateRef.current, data: dataRef.current };
 
         if (!idRef.current) {
-          // First save of a new resume → create
           const res = await fetch("/api/resumes", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -191,7 +272,6 @@ export function ResumeEditor({
     [patch, scheduleSave],
   );
 
-  // Title change also marks dirty
   function onTitleChange(v: string) {
     setTitle(v);
     dirtyRef.current = true;
@@ -206,7 +286,6 @@ export function ResumeEditor({
     scheduleSave();
   }
 
-  // Warn before unload when unsaved changes exist
   useEffect(() => {
     function beforeUnload(e: BeforeUnloadEvent) {
       if (dirtyRef.current) {
@@ -218,7 +297,6 @@ export function ResumeEditor({
     return () => window.removeEventListener("beforeUnload", beforeUnload);
   }, []);
 
-  // Flush pending save on unmount
   useEffect(() => {
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
@@ -236,6 +314,7 @@ export function ResumeEditor({
   /* ---------- PDF + print ---------- */
 
   const [exporting, setExporting] = useState(false);
+  const [exportError, setExportError] = useState<string | null>(null);
 
   async function exportPdf() {
     setExportError(null);
@@ -264,8 +343,6 @@ export function ResumeEditor({
     }
   }
 
-  const [exportError, setExportError] = useState<string | null>(null);
-
   function printResume() {
     window.print();
   }
@@ -273,7 +350,6 @@ export function ResumeEditor({
   /* ---------- section helpers ---------- */
 
   const TemplateComponent = useMemo(() => getTemplate(template).component, [template]);
-
   const profile = data.profile;
 
   function setProfile<K extends keyof ResumeData["profile"]>(key: K, value: ResumeData["profile"][K]) {
@@ -364,7 +440,7 @@ export function ResumeEditor({
     idle: "",
     unsaved: "Unsaved changes…",
     saving: "Saving…",
-    saved: "All changes saved ✓",
+    saved: "All changes saved",
     error: saveError ?? "Save failed",
   };
 
@@ -373,29 +449,29 @@ export function ResumeEditor({
   return (
     <div className="flex min-h-screen flex-col bg-[var(--rb-bg)]">
       {/* Top bar */}
-      <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/95 backdrop-blur">
+      <header className="sticky top-0 z-30 border-b border-[var(--rb-border)] bg-white/95 backdrop-blur">
         <div className="flex h-14 items-center gap-3 px-4">
           <Link
             href="/dashboard"
-            className="flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm font-medium text-slate-600 hover:bg-slate-100"
+            className="flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm font-medium text-[var(--rb-muted)] hover:bg-[var(--rb-bg)]"
           >
             ← Dashboard
           </Link>
 
-          <span className="hidden h-5 w-px bg-slate-200 sm:block" />
+          <span className="hidden h-5 w-px bg-[var(--rb-border)] sm:block" />
 
           <input
             value={title}
             onChange={(e) => onTitleChange(e.target.value)}
             maxLength={160}
             aria-label="Resume title"
-            className="min-w-0 flex-1 rounded-lg border border-transparent bg-transparent px-2 py-1.5 text-sm font-semibold text-slate-900 hover:border-slate-200 focus:border-indigo-400 focus:outline-none"
+            className="min-w-0 flex-1 rounded-lg border border-transparent bg-transparent px-2 py-1.5 text-sm font-semibold text-[var(--rb-primary)] hover:border-[var(--rb-muted-light)] focus:border-[var(--rb-accent)] focus:outline-none focus:ring-2 focus:ring-[var(--rb-accent-light)] transition-colors"
             placeholder="Resume title"
           />
 
           <span
-            className={`hidden text-xs sm:block ${
-              status === "error" ? "text-red-600" : status === "saved" ? "text-emerald-600" : "text-slate-500"
+            className={`hidden text-xs sm-block ${
+              status === "error" ? "text-red-600" : status === "saved" ? "text-emerald-600" : "text-[var(--rb-muted)]"
             }`}
             role="status"
             aria-live="polite"
@@ -406,7 +482,7 @@ export function ResumeEditor({
           <button
             type="button"
             onClick={printResume}
-            className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
+            className="btn-secondary px-3 py-1.5 text-sm"
           >
             Print
           </button>
@@ -414,13 +490,13 @@ export function ResumeEditor({
             type="button"
             onClick={exportPdf}
             disabled={exporting}
-            className="rounded-lg bg-[var(--rb-accent)] px-3.5 py-1.5 text-sm font-semibold text-white hover:opacity-90 disabled:opacity-60"
+            className="btn-primary px-3.5 py-1.5 text-sm disabled:opacity-60"
           >
             {exporting ? "Exporting…" : "Download PDF"}
           </button>
         </div>
         {exportError && (
-          <p role="alert" className="bg-red-50 px-4 py-1.5 text-xs text-red-700">
+          <p role="alert" className="mx-4 bg-red-50 border border-red-100 px-3 py-1.5 text-xs text-red-700 rounded-lg">
             {exportError} — you can use the Print button as a fallback.
           </p>
         )}
@@ -429,31 +505,38 @@ export function ResumeEditor({
       {/* Split layout */}
       <div className="flex flex-1 flex-col lg:flex-row">
         {/* Left: editor rail */}
-        <div className="flex w-full border-b border-slate-200 bg-white lg:w-[46%] lg:border-b-0 lg:border-r xl:w-[44%]">
+        <div className="flex w-full border-b border-[var(--rb-border)] bg-white lg:w-[46%] lg:border-b-0 lg:border-r xl:w-[44%]">
           {/* section nav */}
           <nav
             aria-label="Resume sections"
-            className="rail-scroll w-[62px] shrink-0 overflow-y-auto border-r border-slate-200 py-3 sm:w-[150px]"
+            className="rail-scroll w-[62px] shrink-0 overflow-y-auto border-r border-[var(--rb-border)] py-3 sm:w-[150px]"
           >
             <ul className="space-y-1 px-2">
               {SECTIONS.map((s) => (
-                <li key={s.key}>
-                  <button
-                    type="button"
-                    onClick={() => setActive(s.key)}
-                    aria-current={active === s.key ? "page" : undefined}
-                    className={`flex w-full items-center gap-2 rounded-lg px-2 py-2 text-left text-[13px] font-medium transition ${
-                      active === s.key
-                        ? "bg-indigo-50 text-indigo-700"
-                        : "text-slate-600 hover:bg-slate-50"
-                    }`}
-                  >
-                    <span aria-hidden className="text-base leading-none">
-                      {s.icon}
-                    </span>
-                    <span className="hidden truncate sm:inline">{s.label}</span>
-                  </button>
-                </li>
+                <motion.div
+                  key={s.key}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  <li>
+                    <button
+                      type="button"
+                      onClick={() => setActive(s.key)}
+                      aria-current={active === s.key ? "page" : undefined}
+                      className={`flex w-full items-center gap-2 rounded-lg px-2 py-2 text-left text-[13px] font-medium transition ${
+                        active === s.key
+                          ? "bg-[var(--rb-accent-light)] text-[var(--rb-accent)] border border-[var(--rb-accent)]"
+                          : "text-[var(--rb-muted)] hover:bg-[var(--rb-bg)] hover:text-[var(--rb-primary)]"
+                      }`}
+                    >
+                      <span aria-hidden className="text-base leading-none shrink-0">
+                        {s.icon}
+                      </span>
+                      <span className="hidden truncate sm:inline">{s.label}</span>
+                    </button>
+                  </li>
+                </motion.div>
               ))}
             </ul>
           </nav>
@@ -479,11 +562,11 @@ export function ResumeEditor({
         </div>
 
         {/* Right: preview */}
-        <div className="flex min-w-0 flex-1 flex-col bg-slate-100">
+        <div className="flex min-w-0 flex-1 flex-col bg-[var(--rb-bg)]">
           {/* template picker — scrollable thumbnail strip (scales to all templates) */}
-          <div className="border-b border-slate-200 bg-white px-4 py-3">
+          <div className="border-b border-[var(--rb-border)] bg-white px-4 py-3">
             <div className="flex items-start gap-3">
-              <span className="mt-1.5 shrink-0 text-xs font-semibold uppercase tracking-wide text-slate-500">
+              <span className="mt-1.5 shrink-0 text-xs font-semibold uppercase tracking-wide text-[var(--rb-muted)]">
                 Template
               </span>
               <div className="rail-scroll flex min-w-0 gap-2 overflow-x-auto pb-1">
@@ -497,23 +580,23 @@ export function ResumeEditor({
                     aria-label={`Switch to ${t.name} template`}
                     className={`group w-[74px] shrink-0 rounded-lg border p-1.5 text-left transition ${
                       template === t.id
-                        ? "border-indigo-500 bg-indigo-50 ring-2 ring-indigo-400"
-                        : "border-slate-200 bg-white hover:border-slate-400"
+                        ? "border-[var(--rb-accent)] bg-[var(--rb-accent-light)] shadow-sm"
+                        : "border-[var(--rb-border)] bg-white hover:border-[var(--rb-muted-light)] hover:shadow-sm"
                     }`}
                   >
-                    <div className="h-12 rounded border border-slate-200 bg-white p-1">
+                    <div className="h-12 rounded border border-[var(--rb-border)] bg-[var(--rb-bg)] p-1">
                       <div className="h-1.5 w-6 rounded-sm" style={{ background: t.accent }} />
                       <div className="mt-1 space-y-1">
-                        <div className="h-1 w-full rounded-sm bg-slate-200" />
-                        <div className="h-1 w-4/5 rounded-sm bg-slate-200" />
-                        <div className="h-1 w-full rounded-sm bg-slate-200" />
+                        <div className="h-1 w-full rounded-sm bg-[var(--rb-border)]" />
+                        <div className="h-1 w-4/5 rounded-sm bg-[var(--rb-border)]" />
+                        <div className="h-1 w-full rounded-sm bg-[var(--rb-border)]" />
                         <div
                           className="h-1 w-3/5 rounded-sm"
                           style={{ background: t.accent, opacity: 0.45 }}
                         />
                       </div>
                     </div>
-                    <div className="mt-1 truncate text-[10px] font-medium text-slate-600 group-hover:text-slate-900">
+                    <div className="mt-1 truncate text-[10px] font-medium text-[var(--rb-muted)] group-hover:text-[var(--rb-primary)]">
                       {t.name}
                     </div>
                   </button>
@@ -524,7 +607,7 @@ export function ResumeEditor({
 
           {/* paper preview */}
           <div className="rail-scroll flex-1 overflow-auto p-4 sm:p-8">
-            <div className="mx-auto w-fit shadow-lg ring-1 ring-slate-200">
+            <div className="mx-auto w-fit shadow-lg ring-1 ring-[var(--rb-border)]">
               <TemplateComponent data={data} />
             </div>
           </div>
@@ -625,7 +708,7 @@ function SectionBody(props: SectionBodyProps) {
 
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-[13px] font-medium text-slate-700">Links (LinkedIn, GitHub…)</span>
+            <span className="text-[13px] font-medium text-[var(--rb-muted)]">Links (LinkedIn, GitHub…)</span>
             <button
               type="button"
               onClick={() =>
@@ -635,7 +718,7 @@ function SectionBody(props: SectionBodyProps) {
                 }))
               }
               disabled={profile.links.length >= 8}
-              className="rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50 disabled:opacity-50"
+              className="btn-secondary px-3 py-1.5 text-xs disabled:opacity-50"
             >
               + Add link
             </button>
@@ -680,7 +763,7 @@ function SectionBody(props: SectionBodyProps) {
                     },
                   }))
                 }
-                className="rounded-lg border border-slate-300 px-3 text-sm text-red-600 hover:bg-red-50"
+                className="rounded-lg border border-[var(--rb-border)] px-3 text-sm text-[var(--rb-muted)] hover:bg-red-50 hover:text-red-600"
               >
                 ✕
               </button>
@@ -694,10 +777,7 @@ function SectionBody(props: SectionBodyProps) {
   if (active === "summary") {
     return (
       <div className="space-y-4">
-        <SectionHeading
-          title="Professional summary"
-          subtitle="2–4 lines: who you are, what you've achieved, what you want next."
-        />
+        <SectionHeading title="Professional summary" subtitle="2–4 lines: who you are, what you've achieved, what you want next." />
         <Field label="Summary" hint={`${profile.summary.length}/2000 characters`}>
           <TextArea
             value={profile.summary}
@@ -713,7 +793,7 @@ function SectionBody(props: SectionBodyProps) {
   if (active === "experience") {
     return (
       <div className="space-y-4">
-        <SectionHeading title="Work experience" subtitle="Most recent first — drag ⠿ to reorder." />
+        <SectionHeading title="Work experience" subtitle="Most recent first — drag to reorder." />
         <SortableList
           items={data.experience}
           onReorder={expL.reorder}
@@ -768,14 +848,14 @@ function SectionBody(props: SectionBodyProps) {
                   </Field>
                 </div>
               </div>
-              <label className="flex items-center gap-2 text-[13px] text-slate-700">
+              <label className="flex items-center gap-2 text-[13px] text-[var(--rb-muted)]">
                 <input
                   type="checkbox"
                   checked={e.current}
                   onChange={(ev) =>
                     expL.update(e.id, { current: ev.target.checked, endDate: ev.target.checked ? "" : e.endDate })
                   }
-                  className="h-4 w-4 rounded border-slate-300"
+                  className="h-4 w-4 rounded border-[var(--rb-border)]"
                 />
                 I currently work here
               </label>
@@ -906,7 +986,7 @@ function SectionBody(props: SectionBodyProps) {
                 placeholder="React"
                 aria-label="Skill name"
               />
-              <select
+              <Select
                 value={s.level ?? ""}
                 onChange={(ev) =>
                   skillL.update(s.id, {
@@ -914,14 +994,13 @@ function SectionBody(props: SectionBodyProps) {
                   })
                 }
                 aria-label="Skill level"
-                className="rounded-lg border border-slate-300 bg-white px-2 py-2 text-sm"
               >
                 <option value="">Level (optional)</option>
                 <option value="beginner">Beginner</option>
                 <option value="intermediate">Intermediate</option>
                 <option value="advanced">Advanced</option>
                 <option value="expert">Expert</option>
-              </select>
+              </Select>
               <RemoveBtn onClick={() => skillL.remove(s.id)} />
             </div>
           )}
@@ -1100,10 +1179,7 @@ function SectionBody(props: SectionBodyProps) {
   // custom
   return (
     <div className="space-y-4">
-      <SectionHeading
-        title="Custom sections"
-        subtitle="Awards, volunteering, publications — anything extra."
-      />
+      <SectionHeading title="Custom sections" subtitle="Awards, volunteering, publications — anything extra." />
       <SortableList
         items={data.customSections}
         onReorder={customL.reorder}
@@ -1142,8 +1218,10 @@ function SectionBody(props: SectionBodyProps) {
 function SectionHeading({ title, subtitle }: { title: string; subtitle: string }) {
   return (
     <div>
-      <h2 className="text-lg font-bold text-slate-900">{title}</h2>
-      <p className="mt-0.5 text-sm text-slate-500">{subtitle}</p>
+      <h2 className="text-lg font-semibold text-[var(--rb-primary)] font-display">
+        {title}
+      </h2>
+      <p className="mt-0.5 text-sm text-[var(--rb-muted)]">{subtitle}</p>
     </div>
   );
 }

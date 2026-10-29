@@ -34,8 +34,10 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
-  cacheComponents: true,
-  partialPrefetching: true,
+  // cacheComponents must stay OFF: it statically prerenders /login and
+  // caches GET /api/auth/csrf without its Set-Cookie, so every credentials
+  // sign-in fails with [auth][error] MissingCSRF. It also blocks prerender
+  // on nondeterministic values (bcrypt salt, crypto.getRandomValues()).
   reactStrictMode: true,
   turbopack: {
     rules: {

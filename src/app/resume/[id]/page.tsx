@@ -9,8 +9,7 @@ import { TEMPLATE_IDS, type TemplateId } from "@/types/resume";
 
 export const metadata: Metadata = { title: "Edit resume" };
 
-// Blocking route: waits for the session/DB check before responding (Next 16 cacheComponents)
-export const instant = false;
+// Dynamic route: waits for the session/DB check before responding.
 
 export default async function EditResumePage({
   params,
